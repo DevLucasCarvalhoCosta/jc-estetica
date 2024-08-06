@@ -25,7 +25,6 @@ model Estetica {
   phones        String[]
   description   String
   imageUrl      String
-  image         String
   services      EsteticaService[]
   createdAt     DateTime    @default(now())
   updateAt      DateTime    @updatedAt
@@ -38,7 +37,7 @@ model EsteticaService{
   imageUrl        String
   price           Decimal     @db.Decimal(10,2)
   esteticaId      String
-  estetica        Estetica     @relation(fields: [esteticaId], references: [id])
+  Estetica        Estetica @relation(fields: [esteticaId], references: [id])
   bookings        Booking[]
 }
 
