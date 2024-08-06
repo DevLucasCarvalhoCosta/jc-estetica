@@ -1,0 +1,55 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String      @id @default(cuid())
+  email     String      
+  name      String
+  bookings  Booking[]
+  createdAt DateTime    @default(now())
+  updateAt  DateTime    @updatedAt
+
+}
+
+model Estetica {
+  id            String      @id @default(uuid())
+  name          String
+  address       String
+  phones        String[]
+  description   String
+  imageUrl      String
+  image         String
+  services      EsteticaService[]
+  createdAt     DateTime    @default(now())
+  updateAt      DateTime    @updatedAt
+}
+
+model EsteticaService{
+  id              String      @id @default(cuid())
+  name            String
+  description     String
+  imageUrl        String
+  price           Decimal     @db.Decimal(10,2)
+  esteticaId      String
+  estetica        Estetica     @relation(fields: [esteticaId], references: [id])
+  bookings        Booking[]
+}
+
+model Booking {
+  id            String              @id @default(uuid())
+  userId        String  
+  user          User                @relation(fields: [userId], references: [id])
+  serviceId     String
+  service       EsteticaService     @relation(fields: [serviceId], references: [id])
+  dateTime      DateTime
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+}
+
